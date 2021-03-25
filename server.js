@@ -16,6 +16,9 @@ app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(require("./routes/home-routes"));
 
+// Allow Handlebars to use images -- NOT SURE IF THIS WILL WORK
+app.use(express.static("./public/images"));
+
 // Starts the server to begin listening
 app.listen(PORT, () => {
   console.log("Server listening on: http://localhost:" + PORT);
