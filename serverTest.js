@@ -1,53 +1,51 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var cookieParser = require("cookie-parser");
-var session = require("express-session");
-var morgan = require("morgan");
-var User = require("./models/user");
-var hbs = require("express-handlebars");
-var path = require("path");
+// Dependencies
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const morgan = require("morgan");
+const User = require("./models/user");
+const hbs = require("express-handlebars");
+const bodyParser = require("body-parser");
+const express = require("express");
+const path = require("path");
+// Creating an instance of handlebars
+// const hbs = exphbs.create({});
 
-// invoke an instance of express application.
-var app = express();
-
-// set our application port
+// Sets up the Express App
+const app = express();
+// If the below line doesn't work, try app.set('port',9000);
 app.set("port", 9000);
-
-// set morgan to log info about our requests for development use.
+// const PORT = process.env.PORT || 3001;
 app.use(morgan("dev"));
-
-// initialize body-parser to parse incoming parameters requests to req.body
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// initialize cookie-parser to allow us access the cookies stored in the browser.
 app.use(cookieParser());
-
-// initialize express-session to allow us track the logged-in user across sessions.
 app.use(
   session({
     key: "user_sid",
-    secret: "somerandonstuffs",
+    secret: "somesecret",
     resave: false,
-    saveUninitialized: false,
+    saveUninitalized: false,
     cookie: {
       expires: 600000,
     },
   })
 );
 
-// handle bars config
+// Set Handlebars as the default template engine.
+// (CODE FROM VERSION 1) app.engine("handlebars", hbs.engine);
+// (CODE FROM VERSION 1) app.set("view engine", "handlebars");
+
+// Explanation of below code: Handlebars uses hbs variable created up top, defaultLayout is called 'layout'.  Where is it? It is in the directory: /views/layouts
 app.engine(
   "hbs",
   hbs({
     extname: "hbs",
     defaultLayout: "layout",
-    layoutsDir: __dirname + "/views/layouts/",
+    layoutsDir: __dirname + "/views/layout",
   })
 );
-app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
-// This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
-// This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
+
+// Explanation of below code: If someone is logged in, the cookie stores the information about the user id.  The cookie information is dependent on the application server.  Cookies depending on browser information.  If the application starts and server crashes, this clearscookies
 app.use((req, res, next) => {
   if (req.cookies.user_sid && !req.session.user) {
     res.clearCookie("user_sid");
@@ -55,6 +53,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// This is the handlebars content and it will change for every page
 var hbsContent = {
   userName: "",
   loggedin: false,
@@ -62,7 +61,7 @@ var hbsContent = {
   body: "Hello World",
 };
 
-// middleware function to check for logged-in users
+// Code explanation: middleware function to check for logged-in users
 var sessionChecker = (req, res, next) => {
   if (req.session.user && req.cookies.user_sid) {
     res.redirect("/dashboard");
@@ -76,18 +75,16 @@ app.get("/", sessionChecker, (req, res) => {
   res.redirect("/login");
 });
 
-// route for user signup
+// route for signup page
 app
   .route("/signup")
-  //.get(sessionChecker, (req, res) => {
   .get((req, res) => {
-    //res.sendFile(__dirname + '/public/signup.html');
+    //res.sendFile(__dirname + '/public/signup.html);
     res.render("signup", hbsContent);
   })
   .post((req, res) => {
     User.create({
       username: req.body.username,
-      //email: req.body.email,
       password: req.body.password,
     })
       .then((user) => {
@@ -99,7 +96,8 @@ app
       });
   });
 
-// route for user Login
+// route for user login
+// Code Explanation, the code below: Queries the database checks to see if the password matches, if not see else statements
 app
   .route("/login")
   .get(sessionChecker, (req, res) => {
@@ -159,3 +157,15 @@ app.use(function (req, res, next) {
 app.listen(app.get("port"), () =>
   console.log(`App started on port ${app.get("port")}`)
 );
+
+// (CODE FROM VERSION 1 BELOW)
+// app.use(express.static(path.join(__dirname, "public")));
+// app.use(require("./routes/home-routes"));
+
+// // Allow Handlebars to use images -- NOT SURE IF THIS WILL WORK
+// app.use(express.static("./public/images"));
+
+// // Starts the server to begin listening
+// app.listen(PORT, () => {
+//   console.log("Server listening on: http://localhost:" + PORT);
+// });
