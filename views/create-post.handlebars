@@ -1,0 +1,42 @@
+<section>
+  <a href="/dashboard" class="is-pulled-right"> &larr; Back to Dashboard</a>
+  <h2 class="title">Create a Review</h2>
+  <hr>
+
+  <form class="new-post-form">
+    <div>
+      <label for="post-title">Title:</label>
+      <input class="input" type="text" id="post-title" name="post-title" placeholder="insert review title here" />
+    </div>
+
+    {{!-- Star Review Code --}}
+    <div>
+      <div class="rate">
+        Rating:
+        <input type="radio" id="star5" name="rate" value="5" />
+        <label for="star5" title="text">5 stars</label>
+        <input type="radio" id="star4" name="rate" value="4" />
+        <label for="star4" title="text">4 stars</label>
+        <input type="radio" id="star3" name="rate" value="3" />
+        <label for="star3" title="text">3 stars</label>
+        <input type="radio" id="star2" name="rate" value="2" />
+        <label for="star2" title="text">2 stars</label>
+        <input type="radio" id="star1" name="rate" value="1" />
+        <label for="star1" title="text">1 star</label>
+      </div>
+    </div>
+    <br><br>
+    {{!-- End of Star Review Code --}}
+
+    <div>
+      <label for="post-content">Content:</label>
+      <input class="textarea is-large" id="post-content" name="post-content" placeholder="insert review content here" />
+    </div>
+
+
+
+    <button type="submit" class="button is-primary is-pulled-right">create review</button>
+  </form>
+</section>
+
+<script src="/javascript/add-post.js"></script>

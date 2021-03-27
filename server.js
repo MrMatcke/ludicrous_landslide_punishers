@@ -18,10 +18,7 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const sess = {
   secret: "chronotrigger",
-  cookie: {
-    // Session will automatically expire in 10 minutes
-    expires: 10 * 60 * 1000,
-  },
+  cookie: {},
   resave: true,
   rolling: true,
   saveUninitialized: true,
