@@ -2,13 +2,45 @@
     <meta charset="UTF-8">
     <title>Ms. New Foodie</title>
 
-    <link rel="stylesheet" href="./css/index.css">
+{{!-- Linking to CSS File --}}
+    <link rel="stylesheet" href="./css/style.css">
     {{!-- Bootstrap CSS Link --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    {{!-- Search Bar --}}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+{{!-- Fancy Search Bar --}}
+{{!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> --}}
+
 </head>
 
 <body>
+{{!-- Working Search Bar --}}
+<div class="boxContainer">
+    <table class="elementsContainer">
+        <tr>
+            <td>
+                <input type="text" placeholder="Search"
+                class="search",
+            </td>
+            <td>
+                <a href="#"><i class="material-icons">search</i>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+    {{!-- Fancy Search Bar --}}
+    {{!-- <div class="search-box">
+   <input class="search-txt" type="text" name="" placeholder="Search"> 
+   <a class="search-btn" href="#">
+    <i class="fas fa-search"></i>
+   </a>
+  </div> --}}
+
     <!--Navigation Code from Bootstrap-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -55,6 +87,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
         integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
+
+
 </body>
 
 
