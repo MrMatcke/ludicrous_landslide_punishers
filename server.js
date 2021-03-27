@@ -1,25 +1,39 @@
-// Dependencies
-const express = require("express");
-const exphbs = require("express-handlebars");
-const path = require("path");
-// Creating an instance of handlebars
-const hbs = exphbs.create({});
+const path = require('path');
+const express = require('express');
+const session = require('express-session');
+const exphbs = require('express-handlebars');
+const helpers = require('./utils/helpers');
 
-// Sets up the Express App
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Set Handlebars as the default template engine.
-app.engine("handlebars", hbs.engine);
-app.set("view engine", "handlebars");
+const sequelize = require('./config/config');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(require("./routes/home-routes"));
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+};
 
-// Allow Handlebars to use images -- NOT SURE IF THIS WILL WORK
-app.use(express.static("./public/images"));
+app.use(session(sess));
 
-// Starts the server to begin listening
+const hbs = exphbs.create({ helpers });
+
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(require('./controllers/'));
+
 app.listen(PORT, () => {
-  console.log("Server listening on: http://localhost:" + PORT);
+  console.log(`App listening on port ${PORT}!`);
+  sequelize.sync({ force: false });
 });
